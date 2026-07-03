@@ -10,7 +10,7 @@ export default function ClaimButton({ bniId, status: initialStatus }) {
   const [err, setErr] = useState("");
 
   async function claim() {
-    if (!confirm("確認這是你本人在 BNI 官方頁的資料嗎？認領後，你九宮格裡沒填的欄位會自動用這份官方資料補齊。")) return;
+    if (!confirm("確認這是你本人在 BNI 官方頁的資料嗎？認領後，官方有填寫的欄位會直接覆蓋你九宮格裡的內容。")) return;
     setLoading(true);
     setErr("");
     const res = await fetch("/api/claim", {
