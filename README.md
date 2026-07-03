@@ -22,6 +22,28 @@ npm run dev          # 開發模式（webpack）→ http://localhost:3000
 
 功能：帳號登入 → 填九宮格 → 媒合推薦（雙向互惠）→ 121 邀約/接受/完成筆記 → BNI 會員名錄搜尋（列表精簡摘要，完整資料在內頁）。
 
+## 正式環境部署（Vercel）
+
+- 網址：https://bni-121-match.vercel.app
+- Vercel 專案：`wcmep-s-projects/bni-121-match`
+- GitHub（僅程式碼）：https://github.com/morning675349/bni121-supersystem.git
+
+**重要：抓取的 12,753 位會員個資（data/*.json）不進 git repo**（見 `.gitignore`），避免資料外流風險。
+正式環境更新／首次部署一律用 CLI 直接上傳（`.vercelignore` 刻意不排除 `data/*.json`）：
+```bash
+vercel --prod
+```
+**不能**靠 GitHub → Vercel 的 git 自動部署整合，那樣抓不到本地的資料檔案。GitHub 只用來備份/版本控管程式碼。
+
+### 環境變數（Vercel 後台 → Settings → Environment Variables）
+與 `.env.local.example` 相同的 5 筆，`FIREBASE_PRIVATE_KEY` 建議改用 base64 版本（見下）。
+
+### 已知部署踩坑
+1. **workspace root 誤判**：上層目錄若也有 `package-lock.json`，Next.js 會猜錯 workspace root → `next.config.mjs` 用 `outputFileTracingRoot` 明確指定。
+2. **資料檔案讀不到**：`fs.readFileSync` 動態路徑讀取的 `data/*.json` 不一定會被自動追蹤打包 → `next.config.mjs` 加 `outputFileTracingIncludes: {"/**": ["./data/**"]}`。
+3. **`ERR_REQUIRE_ESM`（500 錯誤，firebase-admin 相關）**：`firebase-admin → google-auth-library → jwks-rsa → jose` 這條相依鏈，`jose` 目前主版本是純 ESM，但 `jwks-rsa` 用 CommonJS `require()` 呼叫它，在 Vercel serverless 執行期會炸掉。**解法**：`package.json` 加 `"overrides": {"jose": "4.15.9"}` 鎖回最後一個支援 CJS 的版本。
+4. **`FIREBASE_PRIVATE_KEY` 格式錯誤**：本機 `.env.local`（靠 dotenv 解析器自動把字面 `\n` 轉真正換行）跟 Vercel 後台 UI（純存原始文字，不做轉換）處理多行私鑰的方式不同，同一組值可能本機能跑、雲端建置失敗。**解法**：改設 `FIREBASE_PRIVATE_KEY_B64`（私鑰整個 base64 編碼後存），`lib/firebaseAdmin.js` 會優先讀這個版本，徹底避開換行/引號跳脫的環境差異。之後在任何新環境設定這組金鑰，優先用 `_B64` 版本，不要把多行 PEM 字串直接貼進 UI 輸入框。
+
 ### Web 目錄
 ```
 app/                Next.js App Router 頁面
