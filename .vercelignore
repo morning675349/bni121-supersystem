@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+.env
+.env.local
+.DS_Store
+# 注意：故意不排除 data/*.json —— 這裡是給 vercel CLI 直接部署用的清單，
+# 跟 .gitignore 不同，正式環境需要這些抓取資料檔案才能運作。
+data/*.html

@@ -1,0 +1,10 @@
+node_modules/
+.next/
+# 抓取的 BNI 會員個資（姓名/電話/地址）不進 git repo，避免歷史紀錄外流風險。
+# 正式環境資料改用 vercel CLI 直接部署（見 .vercelignore，不受此檔影響）。
+data/*.json
+data/*.html
+.env
+.env.local
+.DS_Store
+.vercel

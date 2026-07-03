@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 所有讀寫都經由伺服器端 Firebase Admin SDK（擁有完整權限，不受此規則限制）。
+    // 前端不會直接連線 Firestore，故一律拒絕，避免密鑰外洩時被繞過伺服器直接存取。
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

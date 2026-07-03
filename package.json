@@ -1,0 +1,23 @@
+{
+  "name": "bni-121-match",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BNI 121 對接媒合系統 — 公開會員資料抓取 + 雙向互惠媒合",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "sitemap": "node scraper/fetchSitemap.js",
+    "sample": "node scraper/scrape.js --limit 12 --sample",
+    "scrape": "node scraper/scrape.js",
+    "match": "node scraper/match.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "firebase-admin": "^14.1.0",
+    "next": "^16.2.10",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  }
+}
