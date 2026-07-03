@@ -35,6 +35,11 @@ vercel --prod
 ```
 **不能**靠 GitHub → Vercel 的 git 自動部署整合，那樣抓不到本地的資料檔案。GitHub 只用來備份/版本控管程式碼。
 
+> ⚠️ **已手動執行 `vercel git disconnect`，關閉 Git 自動部署整合。**
+> `git push` 到 GitHub **不會**觸發正式站更新，純粹只是備份程式碼。
+> 想讓正式站生效，一定要另外手動跑 `vercel --prod`。
+> （若不小心重新連接 Git 整合，`git push` 會自動建置一個缺少 data/*.json 的部署並覆蓋掉正式站，導致網站壞掉——這正是本專案發生過一次的真實事故。）
+
 ### 環境變數（Vercel 後台 → Settings → Environment Variables）
 與 `.env.local.example` 相同的 5 筆，`FIREBASE_PRIVATE_KEY` 建議改用 base64 版本（見下）。
 
