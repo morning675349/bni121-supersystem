@@ -87,6 +87,9 @@ a:hover { color: var(--red-dark); text-decoration: underline; }
   background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
   box-shadow: 0 2px 6px rgba(200, 16, 46, .35);
 }
+/* 有實際 BNI 官方會員圓標圖檔時，改用圖檔取代 CSS 畫的方塊標記 */
+.brand-logo::before { content: none; }
+.brand-logo img { height: 26px; width: auto; flex: none; }
 .brand small { color: var(--muted); font-weight: 600; margin-left: 2px; font-size: 12px; letter-spacing: 0; }
 .nav a { color: var(--ink); font-weight: 600; font-size: 14px; transition: color .15s; flex: none; white-space: nowrap; }
 .nav a:hover { color: var(--red); text-decoration: none; }
@@ -196,6 +199,11 @@ a.member-card:hover {
 .mandala-cell-items { display: flex; flex-wrap: wrap; gap: 4px; }
 .mandala-chip { font-size: 11px; background: #fff; border: 1px solid var(--line); color: #3a3d45; padding: 2px 7px; border-radius: var(--r-pill); }
 .mandala-chip.empty { color: var(--faint); font-style: italic; }
+.mandala-chip.met {
+  background: var(--ok-tint); color: var(--ok); border-color: #bfe8cf; font-weight: 700;
+  text-decoration: none; transition: transform .12s;
+}
+a.mandala-chip.met:hover { transform: translateY(-1px); text-decoration: none; }
 .mandala-center {
   grid-row: 2; grid-column: 2;
   display: flex; align-items: center; justify-content: center; text-align: center;
@@ -234,6 +242,16 @@ input:focus, textarea:focus, select:focus {
 .btn.sm { padding: 6px 13px; font-size: 13px; box-shadow: none; }
 .btn:disabled { opacity: .5; cursor: default; transform: none; }
 
+/* 加入最愛 */
+.fav-btn {
+  display: inline-flex; align-items: center; gap: 4px; background: #fff; color: var(--muted);
+  border: 1px solid var(--line); border-radius: var(--r-pill); padding: 5px 12px; font-size: 12.5px;
+  font-weight: 700; cursor: pointer; transition: all .15s;
+}
+.fav-btn:hover { border-color: var(--gold-line); color: var(--gold); }
+.fav-btn.on { background: var(--gold-tint); color: var(--gold); border-color: var(--gold-line); }
+.fav-btn:disabled { opacity: .6; cursor: default; }
+
 .error { background: var(--red-50); color: var(--red-dark); padding: 10px 12px; border-radius: var(--r-md); font-size: 14px; margin: 10px 0; border: 1px solid var(--red-100); }
 .ok { background: var(--ok-tint); color: var(--ok); padding: 10px 12px; border-radius: var(--r-md); font-size: 14px; margin: 10px 0; }
 .muted { color: var(--muted); }
@@ -253,3 +271,8 @@ input:focus, textarea:focus, select:focus {
 .status.declined { background: #f1f1f3; color: var(--muted); }
 .status.completed { background: var(--info-tint); color: var(--info); }
 @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+
+.site-footer {
+  text-align: center; padding: 22px 20px 28px; font-size: 12.5px; color: var(--faint);
+  border-top: 1px solid var(--line); margin-top: 12px;
+}

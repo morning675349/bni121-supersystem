@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getSessionUser } from "@/lib/auth.js";
-import { getProfile } from "@/lib/store.js";
+import { getProfile, listRelationships } from "@/lib/store.js";
 import { userProfileToEntity, getRecommendations } from "@/lib/matching.js";
 import { loadBniMembers } from "@/lib/members.js";
 import MatchCard from "@/components/MatchCard.js";
@@ -25,7 +25,11 @@ export default async function MatchesPage() {
   }
 
   const entity = userProfileToEntity(profile, user);
-  const recs = await getRecommendations(entity, RECOMMEND_COUNT);
+  const [recs, relationships] = await Promise.all([
+    getRecommendations(entity, RECOMMEND_COUNT),
+    listRelationships(user.id),
+  ]);
+  const favoriteIds = new Set(relationships.filter((r) => r.favorite).map((r) => r.targetId));
   const poolSize = loadBniMembers().length;
 
   return (
@@ -39,7 +43,7 @@ export default async function MatchesPage() {
           <p className="muted">目前資料池中還沒有明顯合適的對象。試著把九宮格的「理想引薦 / 理想搭檔」寫得更具體，或等更多會員資料匯入。</p>
         </div>
       ) : (
-        recs.map((m) => <MatchCard key={m.id} m={m} />)
+        recs.map((m) => <MatchCard key={m.id} m={m} initialFavorite={favoriteIds.has(m.id)} />)
       )}
     </div>
   );

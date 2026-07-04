@@ -8,7 +8,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="zh-TW" suppressHydrationWarning>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        {children}
+        <footer className="site-footer">全冠分會 網站規劃顧問代表 王晨安 製作</footer>
+      </body>
     </html>
   );
 }

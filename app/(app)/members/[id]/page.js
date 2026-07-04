@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSessionUser } from "@/lib/auth.js";
 import { getBniMember } from "@/lib/members.js";
-import { getProfile, findProfileByClaimedBniId } from "@/lib/store.js";
+import { getProfile, findProfileByClaimedBniId, getRelationship } from "@/lib/store.js";
 import { displayText } from "@/lib/textClean.js";
 import ClaimButton from "@/components/ClaimButton.js";
+import FavoriteButton from "@/components/FavoriteButton.js";
+import MetToggle from "@/components/MetToggle.js";
 
 const SECTIONS = [
   { key: "business", label: "我的業務" },
@@ -31,6 +33,8 @@ export default async function MemberDetailPage({ params }) {
     const takenBy = await findProfileByClaimedBniId(id);
     if (takenBy) claimStatus = "taken";
   }
+  const relationship = await getRelationship(user.id, id);
+  const myCategories = myProfile?.networkCircle?.categories || [];
 
   return (
     <div>
@@ -41,13 +45,21 @@ export default async function MemberDetailPage({ params }) {
           <span className="name" style={{ fontSize: 20 }}>{m.name}</span>
           {m.region && <span className="badge chapter">{m.region}</span>}
           {m.chapter && <span className="badge bni">{m.chapter}分會</span>}
+          <div className="spacer" style={{ flex: 1 }} />
+          <FavoriteButton targetId={id} initialFavorite={!!relationship?.favorite} />
         </div>
         <div className="cat" style={{ fontSize: 15 }}>
           {[m.company, m.categoryEn || m.specialty].filter(Boolean).join("　·　")}
         </div>
         {m.address && <div className="muted" style={{ fontSize: 13, marginTop: 6 }}>{m.address}</div>}
-        <div style={{ marginTop: 12 }}>
+        <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
           <ClaimButton bniId={id} status={claimStatus} />
+          <MetToggle
+            targetId={id}
+            initialMet={!!relationship?.met}
+            initialCategoryIndex={relationship?.categoryIndex ?? null}
+            categories={myCategories}
+          />
         </div>
       </div>
 

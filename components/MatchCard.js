@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import FavoriteButton from "./FavoriteButton.js";
 
-export default function MatchCard({ m }) {
+export default function MatchCard({ m, initialFavorite = false }) {
   const [state, setState] = useState("idle"); // idle | sending | sent | error
   const [err, setErr] = useState("");
 
@@ -28,6 +29,8 @@ export default function MatchCard({ m }) {
         </span>
         {m.region && <span className="badge chapter">{m.region}</span>}
         {m.sameChapter && <span className="badge chapter">同分會</span>}
+        <div className="spacer" style={{ flex: 1 }} />
+        <FavoriteButton targetId={m.id} initialFavorite={initialFavorite} />
       </div>
       <div className="cat">
         {[m.company, m.categoryEn || m.specialty, m.chapter && `${m.chapter}分會`].filter(Boolean).join("　·　")}
