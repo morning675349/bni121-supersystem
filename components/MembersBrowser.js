@@ -23,14 +23,16 @@ export default function MembersBrowser({ members }) {
   }, [members, region]);
 
   const filtered = useMemo(() => {
-    const kw = q.trim().toLowerCase();
+    // BNI 官方資料的姓名格式是「姓 名」中間帶空格(如「王 晨安」)，
+    // 但一般人自然會打「王晨安」不留空格搜尋，比對前先把兩邊空白都去掉，避免因為這個空格差異搜不到。
+    const norm = (s) => (s || "").replace(/\s+/g, "").toLowerCase();
+    const kw = norm(q);
     let list = members;
     if (region) list = list.filter((m) => (m.region || "未分類") === region);
     if (chapter) list = list.filter((m) => m.chapter === chapter);
     if (kw)
       list = list.filter((m) =>
-        [m.name, m.company, m.categoryEn, m.specialty, m.business, m.chapter, m.region]
-          .filter(Boolean).join(" ").toLowerCase().includes(kw)
+        norm([m.name, m.company, m.categoryEn, m.specialty, m.business, m.chapter, m.region].filter(Boolean).join("")).includes(kw)
       );
     return list;
   }, [members, q, region, chapter]);
