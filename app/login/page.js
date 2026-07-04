@@ -28,8 +28,10 @@ export default function Login() {
   return (
     <main className="container narrow">
       <div className="hero" style={{ paddingBottom: 12 }}>
-        <img src="/bni-badge.png" alt="BNI" style={{ height: 64, marginBottom: 10 }} />
-        <div className="brand brand-logo" style={{ justifyContent: "center" }}>BNI 121 <small>對接媒合</small></div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+          <img src="/bni-badge.png" alt="BNI" style={{ height: 64 }} />
+          <div className="brand brand-logo">BNI 121 <small>對接媒合</small></div>
+        </div>
         <h1 style={{ fontSize: 24, marginTop: 16 }}>登入</h1>
       </div>
       <form className="card" onSubmit={submit}>
