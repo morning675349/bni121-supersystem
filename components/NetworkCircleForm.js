@@ -3,6 +3,19 @@ import { useState } from "react";
 
 const EMPTY_CATS = Array.from({ length: 8 }, () => ({ name: "", items: [] }));
 
+// 只是「範例」示意 8 大類長什麼樣子，用室內設計業者的人脈圈當說明(跟使用者自己的實際內容無關)，
+// 每一類都不一樣，避免使用者誤以為要照抄同一個例子 8 次。
+const EXAMPLES = [
+  { name: "建材供應", items: "磁磚行、木地板行、油漆行、五金行" },
+  { name: "家具家飾", items: "家具行、燈飾行、窗簾布行、寢具行" },
+  { name: "廚衛設備", items: "廚具行、衛浴設備商、系統櫃廠商" },
+  { name: "空間規劃", items: "建築師、庭園景觀設計師" },
+  { name: "工程服務", items: "水電工程、冷氣空調、防水抓漏" },
+  { name: "房產相關", items: "房仲業務、代書、銀行貸款專員" },
+  { name: "行銷曝光", items: "攝影師、社群小編、網紅部落客" },
+  { name: "售後保固", items: "清潔公司、保全系統、搬家公司" },
+];
+
 export default function NetworkCircleForm({ initial }) {
   const initCats = initial?.categories?.length ? initial.categories : EMPTY_CATS;
   const [center, setCenter] = useState(initial?.center || "");
@@ -40,13 +53,14 @@ export default function NetworkCircleForm({ initial }) {
     <form className="card" onSubmit={save}>
       <h2>我的業務人脈圈</h2>
       <p className="muted" style={{ marginTop: 0 }}>
-        以你的核心服務為中心，往外盤點 8 類「營運／營銷夥伴」，每類再列出具體想認識的角色（最多 8 個）。
-        這是你自己客製的曼陀羅九宮格/81宮格，沒有固定分類，依你的事業自由填寫。
+        透過業務人脈圈，我們能夠找到與自己有相同客戶但無競爭關係的行業夥伴，並互相合作和共生。
+        這樣的合作可以增加業務曝光度、擴大客戶群體，並提升業績。
+        這是你自己客製的曼陀羅九宮格/81宮格，沒有固定分類，依你的事業自由填寫（下方灰字僅為範例）。
       </p>
       {msg && <div className="ok">{msg}</div>}
 
       <label style={{ marginTop: 6 }}>核心身份 / 主力服務 <span className="hint">九宮格正中央</span></label>
-      <input value={center} onChange={(e) => setCenter(e.target.value)} placeholder="例：網站行銷" />
+      <input value={center} onChange={(e) => setCenter(e.target.value)} placeholder="例：室內設計" />
 
       <div className="circle-grid">
         {cats.map((c, i) => (
@@ -55,13 +69,13 @@ export default function NetworkCircleForm({ initial }) {
               className="circle-cat-name"
               value={c.name}
               onChange={(e) => setCat(i, { name: e.target.value })}
-              placeholder={`分類 ${i + 1}，例：政府計劃`}
+              placeholder={`分類 ${i + 1}，例：${EXAMPLES[i].name}`}
             />
             <textarea
               className="circle-cat-items"
               value={c.itemsText}
               onChange={(e) => setCat(i, { itemsText: e.target.value })}
-              placeholder="具體項目，用頓號或逗號分隔，最多8個。例：中衛中心、工研院、商研院、生產力中心"
+              placeholder={`具體項目，用頓號或逗號分隔，最多8個。例：${EXAMPLES[i].items}`}
             />
           </div>
         ))}
