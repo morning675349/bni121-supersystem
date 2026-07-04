@@ -5,7 +5,7 @@ import { userProfileToEntity, getRecommendations } from "@/lib/matching.js";
 import { loadBniMembers } from "@/lib/members.js";
 import MatchCard from "@/components/MatchCard.js";
 
-const RECOMMEND_COUNT = 20;
+const RECOMMEND_COUNT = 100;
 
 export const dynamic = "force-dynamic";
 
