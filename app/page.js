@@ -7,7 +7,10 @@ export default async function Home() {
   const user = await getSessionUser();
   if (user) redirect("/matches");
 
-  const count = loadBniMembers().length;
+  const members = loadBniMembers();
+  const count = members.length;
+  const chapters = new Set(members.map((m) => m.chapter).filter(Boolean)).size;
+  const regions = new Set(members.map((m) => m.region).filter(Boolean)).size;
 
   return (
     <main className="container narrow">
@@ -22,8 +25,14 @@ export default async function Home() {
         </p>
       </div>
 
+      <div className="stat-row">
+        <div className="stat"><b>{count.toLocaleString()}</b><span>位 BNI 夥伴</span></div>
+        <div className="stat"><b>{chapters}</b><span>個分會</span></div>
+        <div className="stat"><b>{regions}</b><span>個區域</span></div>
+      </div>
+
       <div className="card center">
-        <p className="muted" style={{ marginTop: 0 }}>目前資料庫已收錄 <b>{count}</b> 位 BNI 夥伴的公開商業資料</p>
+        <p className="muted" style={{ marginTop: 0 }}>來自全台 BNI 公開會員頁的公開商業資料，每週自動更新</p>
         <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 12 }}>
           <Link className="btn" href="/register">建立帳號</Link>
           <Link className="btn ghost" href="/login">登入</Link>
